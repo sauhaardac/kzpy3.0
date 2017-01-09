@@ -217,9 +217,10 @@ for s in subjects.keys():
 		print(d2f('\t',s,dp(ttest(vv,fv),n),dp(ttest(vf,ff),n),dp(ttest(vv,rv),n),dp(ttest(rf,ff),n),dp(ttest(vf,rf),n),dp(ttest(rv,fv),n),p))
 
 """
+				(vv,fv)	(vf,ff)	(vv,rv)	(rf,ff)	(vf,rf)	(rv,fv) p
 		S1_2015	0.0		0.03465	0.0		0.18073	0.18349	0.4737	2
 		S1_2015	0.0		0.00026	0.0		0.00043	0.74645	0.01185	3
-		S1_2015	6e-05	0.0	0.0	0.01187	0.00076	0.15281	4
+		S1_2015	6e-05	0.0		0.0		0.01187	0.00076	0.15281	4
 		S1_2015	0.0		0.00056	0.0		0.51094	0.00086	0.77597	5
 		S1_2014	0.03548	0.28494	0.0238	0.1673	0.62966	0.90329	100
 		S1_2014	0.05655	0.16875	1e-05	0.4734	0.35452	0.02259	101
@@ -229,6 +230,9 @@ for s in subjects.keys():
 		S6_2015	0.00192	0.01422	0.00255	0.02276	0.60163	0.24409	101
 		S6_2015	0.0467	0.00341	0.03477	0.0018	0.36701	0.97589	102
 		S6_2015	0.00259	3e-05	0.00314	0.00201	0.01612	0.9834	103
+
+Vase region, attend vase vs. read letters significant at p<0.05 or better for all subjects and all paintings.
+Face region, attend face vs. read letters, significant at p<0.05 or better for 3 out of 4 paintings for Subjects 2 & 3, and for 1 out of 4 paintings for Subject 4.
 """
 
 
