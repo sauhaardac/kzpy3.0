@@ -20,6 +20,9 @@ if False:
 #
 ####################################
 
+def print_stars(n=1):
+    for i in range(n):
+        print("""*************************************************""")
 
 # - import common modules
 import os
@@ -39,6 +42,7 @@ import re
 import subprocess
 from pprint import pprint
 import serial
+import h5py
 try:
     from termcolor import cprint
 except:
@@ -48,6 +52,8 @@ except:
 import socket
 host_name = socket.gethostname()
 home_path = os.path.expanduser("~")
+import getpass
+username = getpass.getuser()
 imread = scipy.misc.imread
 imsave = scipy.misc.imsave
 #opj = os.path.join
@@ -466,7 +472,7 @@ def memory():
     return ret
 
 
-def most_recent_file_in_folder(path,str_elements):
+def most_recent_file_in_folder(path,str_elements=[]):
     files = gg(opj(path,'*'))
     if len(files) == 0:
         return None
@@ -557,10 +563,10 @@ def in_range(e,a,b):
             return True
     return False
 
-def nvidia_smi_continuous():
+def nvidia_smi_continuous(t=5):
     while True:                                     
         unix('nvidia-smi')
-        time.sleep(5)
+        time.sleep(t)
 
 class Timer:
     def __init__(self, time_s):
@@ -595,3 +601,18 @@ def sequential_means(data,nn):
         d.append(a[i:i+n].mean())
         x.append(i+n/2.)
     return x,d
+
+
+def tab_list_print(l,n=1,color=None,on_color=None):
+    for e in l:
+        s = ''
+        for j in range(n):
+            s += '\t'
+        cprint(s+e,color,on_color)
+
+
+
+def start_at(t):
+    while time.time() < t:
+        time.sleep(0.1)
+        print(t-time.time())

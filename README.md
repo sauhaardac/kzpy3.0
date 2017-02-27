@@ -1,3 +1,3 @@
 # kzpy3.0
 
-learning to program in python.
+Code for BDD project and fMRI.

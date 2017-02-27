@@ -5,7 +5,7 @@ import rospy
 import std_msgs.msg
 
 
-from computer_name import foldername
+from kzpy3.teg2.car_run_params import foldername
 
 time.sleep(3)
 

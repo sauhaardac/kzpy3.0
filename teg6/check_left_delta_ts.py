@@ -1,24 +1,23 @@
 from kzpy3.teg4.data.preprocess.preprocess_bag_data import *
 
-#preprocess_bag_data('/media/karlzipser/rosbags/direct_racing_Tilden_24Dec16_21h11m31s_Mr_Blue'  )
-#L = load_obj('/media/karlzipser/rosbags/direct_racing_Tilden_24Dec16_18h53m06s_Mr_Blue/.preprocessed2/left_image_bound_to_data.pkl' )
-#L = load_obj('/home/karlzipser/Desktop/bair_car_data/new_meta_23/caffe_z2_direct_Tilden_23Dec16_15h22m12s_Mr_Orange/left_image_bound_to_data.pkl')
-#L = load_obj('/media/karlzipser/rosbags/direct_racing_Tilden_24Dec16_21h11m31s_Mr_Blue/.preprocessed2/left_image_bound_to_data.pkl')
-#preprocess_bag_data('/media/karlzipser/rosbags/direct_local_25Dec16_21h46m56s_Mr_X')
-#L = load_obj('/media/karlzipser/rosbags/direct_local_25Dec16_21h46m56s_Mr_X/.preprocessed2/left_image_bound_to_data.pkl')
+run_paths = sorted(gg('/media/karlzipser/rosbags/new/*'))
 
-#preprocess_bag_data('/media/karlzipser/bair_car_data_8/bcd2/caffe_direct_local_26Dec16_16h27m57s_Mr_Blue_original_clone')
-L = load_obj('/media/karlzipser/bair_car_data_8/bcd/caffe_z2_direct_Tilden_22Dec16_14h29m03s_Mr_Teal/.preprocessed2/left_image_bound_to_data.pkl')
+for r in run_paths:
+	if 'lost' not in r:
+		#preprocess_bag_data(r)
+		L = load_obj(opj(r,'.preprocessed2/left_image_bound_to_data.pkl'))
 
-ts = sorted(L.keys())
+		ts = sorted(L.keys())
 
-dts = []
+		dts = []
 
-for i in range(1,len(ts)):
-	dt = ts[i]-ts[i-1]
-	if dt > 0.08:
-		dt = 0.08
-	dts.append(dt)
-
-plot(ts[1:],dts)
-figure(5);hist(dts)
+		for i in range(1,len(ts)):
+			dt = ts[i]-ts[i-1]
+			if dt > 1.2:
+				dt = 1.2
+			dts.append(dt)
+		figure(1)
+		clf()
+		plot(ts[1:],dts)
+		figure(5);clf();hist(dts)
+		pause(0.01)

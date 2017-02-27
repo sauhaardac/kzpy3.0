@@ -172,8 +172,8 @@ class Arduino:
                
                 ### write servos serial
                 write_to_servos = False
-                for var, queue in (('steer', self.cmd_steer_queue),
-                                   ('motor', self.cmd_motor_queue)):
+                for var, queue in (('cmd_steer', self.cmd_steer_queue),
+                                   ('cmd_motor', self.cmd_motor_queue)):
                     if not queue.empty():
                         write_to_servos = True
                         info[var] = queue.get()
@@ -185,7 +185,7 @@ class Arduino:
 		#write_to_servos = True
                         
                 if write_to_servos:
-                    servos_write_int = 10000*1 + 100*info['steer'] + info['motor']
+                    servos_write_int = 10000*1 + 100*info['cmd_steer'] + info['cmd_motor']
                     servos_write_str = '( {0} )'.format(servos_write_int)
                     #print(('servos_write_str',servos_write_str))#,STEER))
                     self.ser_servos.write(servos_write_str)

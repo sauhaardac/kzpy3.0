@@ -79,6 +79,7 @@ def init(bag_folders_path_meta_path,bag_folders_rgb_1to4_path, left_image_bound_
         """
         SL = BF['left_image_bound_to_data']
         #assert('encoder' in SL[ts])
+        """
         if not 'encoder' in SL[ts]:
             bad_timestamps_list.append(ts)
             cprint("if not 'encoder' in SL[ts]:")
@@ -89,6 +90,7 @@ def init(bag_folders_path_meta_path,bag_folders_rgb_1to4_path, left_image_bound_
             cprint("if not 'gyro' in SL[ts]:")
             continue
         #assert('encoder' in SL[ts])
+        """
         if not 'motor' in SL[ts]:
             bad_timestamps_list.append(ts)
             cprint("if not 'motor' in SL[ts]:")
@@ -104,6 +106,7 @@ def init(bag_folders_path_meta_path,bag_folders_rgb_1to4_path, left_image_bound_
             cprint("if not 'state' in SL[ts]:")
             continue
         #assert('encoder' in SL[ts])
+        """
         if not type(SL[ts]['encoder']) == float:
             cprint("if not type(SL[ts]['encoder']) == float:")
             bad_timestamps_list.append(ts)
@@ -118,6 +121,7 @@ def init(bag_folders_path_meta_path,bag_folders_rgb_1to4_path, left_image_bound_
             cprint(" if not len(SL[ts]['acc']) == 3:")
             continue
         #assert('encoder' in SL[ts])
+        """
         if not type(SL[ts]['motor']) == float:
             bad_timestamps_list.append(ts)
             cprint("if not type(SL[ts]['motor']) == float:")
@@ -193,6 +197,7 @@ def init(bag_folders_path_meta_path,bag_folders_rgb_1to4_path, left_image_bound_
     BF['data']['steer'] = _elements(BF,'steer')
     BF['data']['motor'] = _elements(BF,'motor')
     
+    """
     gyro = _elements(BF,'gyro')
 
     BF['data']['gyro_x'] = gyro[:,0]
@@ -206,14 +211,15 @@ def init(bag_folders_path_meta_path,bag_folders_rgb_1to4_path, left_image_bound_
     BF['data']['acc_x'] = acc[:,0]
     BF['data']['acc_z'] = acc[:,1]
     BF['data']['acc_y'] = acc[:,2]
-
-    extremes = [['gyro_x', -140,140],
-        ['gyro_z', -140,140],
-        ['gyro_y',-140,140],
-        ['encoder', 0, 10],
-        ['acc_x',-12,12],
-        ['acc_y', -12,12],
-        ['acc_z',-8,20],
+    """
+    extremes = [
+        #['gyro_x', -140,140],
+        #['gyro_z', -140,140],
+        #['gyro_y',-140,140],
+        #['encoder', 0, 10],
+        #['acc_x',-12,12],
+        #['acc_y', -12,12],
+        #['acc_z',-8,20],
         ['motor',0,99],
         ['steer',0,99]]
     for e in extremes:

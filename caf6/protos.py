@@ -58,6 +58,22 @@ layer {
 	p = p.replace("BOTTOM",bottom)
 	return p
 
+def drop(bottom,ratio):
+	p = """
+layer {
+\tname: "BOTTOM_drop"
+\ttype: "Dropout"
+\tbottom: "BOTTOM"
+\ttop: "BOTTOM"
+\tdropout_param {
+\t\tdropout_ratio: RATIO
+\t}
+}
+	"""
+	p = p.replace("BOTTOM",bottom)
+	p = p.replace("RATIO",str(ratio))
+	return p
+
 def deconv(top,bottom,num_output,group,kernel_size,stride,pad,weight_filler_type,std=0):
 	return conv(top,bottom,num_output,group,kernel_size,stride,pad,weight_filler_type,std).replace('Convolution','Deconvolution')
 
@@ -108,7 +124,7 @@ def conv_layer_set(
 	p = p + conv(c_top,c_bottom,c_num_output,c_group,c_kernel_size,c_stride,c_pad,weight_filler_type,std)
 	p = p + relu(c_top)
 	p = p + pool(c_top,p_type,p_kernel_size,p_stride,p_pad)
-	p = p + '\n############################################################\n\n'
+	p = p + '\n#\n############################################################\n\n'
 	return p
 
 def dummy(top,dims):
@@ -160,6 +176,29 @@ layer {
 		p = p.replace('PHASE',phase)
 	return p
 
+def concat(top,bottom_list,axis):
+	p = """
+layer {
+\ttype: 'Concat'
+\tname: 'TOP'
+BOTTOM_LIST
+\ttop: 'TOP'
+\tconcat_param {
+\t\taxis: AXIS
+\t}
+}
+		"""
+	bottom_list_str = ""
+	for i in range(len(bottom_list)):
+		b = bottom_list[i]
+		bottom_list_str += """\tbottom: \""""+b+"""\""""
+		if i < len(bottom_list) - 1:
+			bottom_list_str += '\n'
+	p = p.replace('TOP',top)
+	p = p.replace('BOTTOM_LIST',bottom_list_str)
+	p = p.replace('AXIS',str(axis))
+
+	return p
 def ip(top,bottom,num_output,weight_filler_type,std=0):
 	p = """
 layer {
@@ -189,7 +228,7 @@ def ip_layer_set(top,bottom,num_output,weight_filler_type,std=0):
 	p = """\n###################### IP Layer Set '"""+top+"""' ######################\n#"""
 	p = p + ip(top,bottom,num_output,weight_filler_type,std)
 	p = p + relu(top)
-	p = p + '\n############################################################\n\n'
+	p = p + '\n#\n############################################################\n\n'
 	return p
 
 def euclidean(top,bottom1,bottom2):

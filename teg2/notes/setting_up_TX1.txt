@@ -155,7 +155,8 @@ $ roslaunch bair_car bair_car.launch use_zed:=true record:=true
 
 
 
-
+######### prompt,e.g. #########
+PS1='Mr_Audi:\W\ $ '
 
 ############## screen ########
 # http://www.howtogeek.com/howto/ubuntu/keep-your-ssh-session-running-when-you-disconnect/
@@ -259,3 +260,41 @@ sudo date --set="$(ssh karlzipser@192.168.43.243 date)"
 
 
 http://wiki.ros.org/web_video_server
+
+
+
+
+
+
+
+PS1="Mr_Silver: \W$ " #"Mr_Blue_original_clone: \W$ "
+export PATH=/usr/local/cuda-7.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export LD_LIBRARY_PATH=/usr/local/cuda-7.0/lib:
+export __GL_PERFMON_MODE=1
+
+source /opt/ros/indigo/setup.bash
+source ~/catkin_ws/devel/setup.bash
+source ~/kzpy3/teg2/bashrc
+
+
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  SESSION_TYPE=remote/ssh
+  echo "This is a remote/ssh login"
+        echo "sleep before rstat"
+        sleep 30
+  rstat
+# many other tests omitted
+else
+        echo "sleep before rla..."
+        sleep 30
+        rrm
+        rlog
+        rla
+#       (rla 3>&1 1>&2 2>&3 | grep -v "slMat2cvMat: mat type currently not supported 0 0") 3>&1 1>&2 2>&3
+
+fi
+
+
+
+
+nmcli d wifi connect “--your wifi network name here--” password “--your password here--”

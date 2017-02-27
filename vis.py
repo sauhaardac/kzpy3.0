@@ -1,7 +1,10 @@
 from kzpy3.utils import *
 
 import matplotlib
-
+try:
+    import cv2
+except:
+    print("Couldn't import cv")
 
 
 MacOSX = False
@@ -44,12 +47,12 @@ def kzpy_vis_test():
     plt.hist(np.random.randn(10000),bins=100)
     True
 
-def hist(data):
+def hist(data,bins=100):
     """
     default hist behavior
     """
     plt.clf()
-    plt.hist(data,bins=100)
+    plt.hist(data,bins=bins)
     pass
 plot = plt.plot
 figure = plt.figure
@@ -362,3 +365,32 @@ def apply_rect_to_img(img,value,min_val,max_val,pos_color,neg_color,rel_bar_heig
 def plt_square():
     plt.gca().set_aspect('equal',adjustable='box')
     plt.draw()
+
+
+
+def function_close_all_windows():
+    plt.close('all')
+CA = function_close_all_windows
+
+
+
+def mi_or_cv2_animate(img_array,cv=True,delay=30,title='animate'):
+    if type(img_array)==np.ndarray:
+        for i in range(len(img_array)):
+             mi_or_cv2(img_array[i],cv,delay,title)        
+    elif type(img_array)==np.ndarray:
+        for i in range(len(img_array[0])):
+             mi_or_cv2(img_array[i],cv,delay,title)
+    else:
+        print('I am confused')
+        assert(False)
+
+def mi_or_cv2(img,cv=True,delay=30,title='animate'):
+    if cv:
+        cv2.imshow(title,cv2.cvtColor(img,cv2.COLOR_RGB2BGR))
+        if cv2.waitKey(delay) & 0xFF == ord('q'):
+            pass
+    else:
+        mi(img,title)
+        pause(0.0001)
+

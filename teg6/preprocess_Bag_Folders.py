@@ -2,7 +2,11 @@ from kzpy3.vis import *
 #import kzpy3.teg6.data.access.Bag_Folder as Bag_Folder
 import kzpy3.teg6.Bag_Folder as Bag_Folder
 
-
+"""
+bag_folders_path_meta_path = opjD('bair_car_data/temp_meta_location/Smyth')
+bag_folders_path_rgb1to4_path = opjD('bair_car_data/rgb_1to4')
+preprocess_Bag_Folder(bag_folders_path_meta_path,bag_folders_path_rgb1to4_path,NUM_STATE_ONE_STEPS=30,graphics=False,accepted_states=[1])
+"""
 
 
 def preprocess_Bag_Folder(bag_folders_path_meta_path,bag_folders_path_rgb1to4_path,NUM_STATE_ONE_STEPS=30,graphics=False,accepted_states=[1]):
@@ -25,7 +29,7 @@ def preprocess_Bag_Folder(bag_folders_path_meta_path,bag_folders_path_rgb1to4_pa
 
 			if len(gg(opj(bfp,'Bag_Folder.pkl'))) == 1:
 				print('\t exists')
-				if graphics:
+				if False: #graphics:
 					cprint(opj(run_name,'Bag_Folder.pkl')+' exists, loading it.','yellow','on_red')
 					BF = load_obj(opj(bfp,'Bag_Folder.pkl'))
 			else:

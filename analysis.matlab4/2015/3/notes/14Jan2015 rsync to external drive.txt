@@ -1,6 +1,0 @@
-13Jan2015
-rsync -rav ~/Desktop/fMRI_top_node /Volumes/Karl\ Zipser\ fMRI2/Portable_drive
-
-14Jan2015
-rsync -rav ~/Google\ Drive /Volumes/Karl\ Zipser\ fMRI2/Portable_drive
-rsync -rav ~/Desktop/Data  /Volumes/Karl\ Zipser\ fMRI2/Portable_drive
