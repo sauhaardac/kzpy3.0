@@ -1,48 +1,28 @@
 # /home/karlzipser/kzpy3/caf6/z2_color
 # Tuesday, 24 Jan 2017, 12:25:56 PM
 
-layer {
-	name: "steer_motor_target_data"
-	type: "DummyData"
-	top: "steer_motor_target_data"
-	dummy_data_param {
-		shape {
-			dim: 1
-			dim: 20
-		}
-	}
+input: "ZED_data_pool2"
+input_shape {
+    dim: 1
+    dim: 12
+    dim: 94
+    dim: 168
 }
-	
 
-layer {
-	name: "metadata"
-	type: "DummyData"
-	top: "metadata"
-	dummy_data_param {
-		shape {
-			dim: 1
-			dim: 6
-			dim: 14
-			dim: 26
-		}
-	}
+input: "metadata"
+input_shape {
+    dim: 1
+    dim: 6
+    dim: 14
+    dim: 26
 }
-	
 
-layer {
-	name: "ZED_data_pool2"
-	type: "DummyData"
-	top: "ZED_data_pool2"
-	dummy_data_param {
-		shape {
-			dim: 1
-			dim: 12
-			dim: 94
-			dim: 168
-		}
-	}
+input: "steer_motor_target_data"
+input_shape {
+    dim: 1
+    dim: 20
 }
-	
+
 
 ###################### Convolutional Layer Set 'conv1' ######################
 #

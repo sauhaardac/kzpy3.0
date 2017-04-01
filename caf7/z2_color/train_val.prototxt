@@ -7,7 +7,6 @@ layer {
 		shape {
 			dim: 1
 			dim: 20
-			#dim: 1
 		}
 	}
 }
@@ -34,7 +33,7 @@ layer {
 	dummy_data_param {
 		shape {
 			dim: 1
-			dim: 18
+			dim: 12
 			dim: 94
 			dim: 168
 		}
@@ -235,41 +234,10 @@ layer {
 }
 
 layer {
-	name: "lstm"
-	type: "LSTM"
-	bottom: "steer_motor_target_data"
-	bottom: "ip2"
-	top: "lstm"
-	recurrent_param {
-		num_output: 20
-		weight_filler {
-			type: "gaussian"
-			std: 0.1
-		}
-		bias_filler {
-			type: "constant"
-			value: 0
-		}
-	}
-}
-
-layer {
-	name: "ip3"
-	type: "InnerProduct"
-	bottom: "lstm"
-	top: "ip3"
-	inner_product_param {
-		num_output: 20
-		weight_filler {
-			type: "xavier" 
-		}
-	}
-}
-layer {
 	name: "euclidean"
 	type: "EuclideanLoss"
 	bottom: "steer_motor_target_data"
-	bottom: "ip3"
+	bottom: "ip2"
 	top: "euclidean"
 	loss_weight: 1
 }

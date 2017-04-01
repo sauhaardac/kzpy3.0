@@ -1,4 +1,4 @@
-net: "/Users/karlzipser/Desktop/z2_color_lstm/train_val.prototxt"
+net: "/home/tushar/documents/school/berkeley/spring-2017/research/bdd/kzpy3/caf6/z2_color_lstm/train_val.prototxt"
 test_iter: 1
 test_interval: 1000000
 test_initialization: false
@@ -11,4 +11,4 @@ power: 0.75
 display: 20000
 max_iter: 10000000
 snapshot: 100000000
-snapshot_prefix: "/Users/karlzipser/Desktop/snapshot"
+snapshot_prefix: "/home/tushar/documents/school/berkeley/spring-2017/research/bdd/kzpy3/caf6/z2_color_lstm/snapshot"

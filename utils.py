@@ -42,7 +42,10 @@ import re
 import subprocess
 from pprint import pprint
 import serial
-import h5py
+try:
+    import h5py
+except:
+    print("don't have h5py")
 try:
     from termcolor import cprint
 except:
@@ -563,7 +566,7 @@ def in_range(e,a,b):
             return True
     return False
 
-def nvidia_smi_continuous(t=5):
+def nvidia_smi_continuous(t=0.1):
     while True:                                     
         unix('nvidia-smi')
         time.sleep(t)

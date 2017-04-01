@@ -41,6 +41,7 @@ try:
 	#          ROSPY SETUP SECTION
 	import roslib
 	import std_msgs.msg
+	import geometry_msgs.msg
 	import cv2
 	from cv_bridge import CvBridge,CvBridgeError
 	import rospy
@@ -115,6 +116,27 @@ try:
 		c = 99-c
 		camera_heading = int(c)
 
+	freeze = False
+	def gyro_callback(msg):
+		global freeze
+		gyro = msg
+		#if np.abs(gyro.y) > gyro_freeze_threshold:
+		#	freeze = True
+		if np.sqrt(gyro.y**2+gyro.z**2) > gyro_freeze_threshold:
+			freeze = True
+	def acc_callback(msg):
+		global freeze
+		acc = msg
+		if np.abs(acc.z) > acc_freeze_threshold:
+			freeze = True
+
+	encoder_list = []
+	def encoder_callback(msg):
+		global encoder_list
+		encoder_list.append(msg.data)
+		if len(encoder_list) > 30:
+			encoder_list = encoder_list[-30:]
+
 	##
 	########################################################
 
@@ -128,13 +150,15 @@ try:
 	rospy.Subscriber('/bair_car/state_transition_time_s', std_msgs.msg.Int32, state_transition_time_s_callback)
 	steer_cmd_pub = rospy.Publisher('cmd/steer', std_msgs.msg.Int32, queue_size=100)
 	motor_cmd_pub = rospy.Publisher('cmd/motor', std_msgs.msg.Int32, queue_size=100)
-
+	model_name_pub = rospy.Publisher('/bair_car/model_name', std_msgs.msg.String, queue_size=10)
 	#rospy.Subscriber('/bair_car/GPS2_lat', std_msgs.msg.Float32, callback=GPS2_lat_callback)
 	#rospy.Subscriber('/bair_car/GPS2_long', std_msgs.msg.Float32, callback=GPS2_long_callback)
 	#rospy.Subscriber('/bair_car/GPS2_lat_orig', std_msgs.msg.Float32, callback=GPS2_lat_callback)
 	#rospy.Subscriber('/bair_car/GPS2_long_orig', std_msgs.msg.Float32, callback=GPS2_long_callback)
 	#rospy.Subscriber('/bair_car/camera_heading', std_msgs.msg.Float32, callback=camera_heading_callback)
-
+	rospy.Subscriber('/bair_car/gyro', geometry_msgs.msg.Vector3, callback=gyro_callback)
+	rospy.Subscriber('/bair_car/acc', geometry_msgs.msg.Vector3, callback=acc_callback)
+	rospy.Subscriber('encoder', std_msgs.msg.Float32, callback=encoder_callback)
 
 	ctr = 0
 
@@ -147,9 +171,14 @@ try:
 	folder_display_timer = Timer(30)
 	git_pull_timer = Timer(60)
 	reload_timer = Timer(10)
+	caf_steer_previous = 49
+	caf_motor_previous = 49
 	#verbose = False
+	
+	
 	while not rospy.is_shutdown():
 		if state in [3,5,6,7]:
+			
 			if (previous_state not in [3,5,6,7]):
 				previous_state = state
 				caffe_enter_timer.reset()
@@ -218,6 +247,19 @@ try:
 					if caf_steer < 0:
 						caf_steer = 0
 
+					caf_steer = int((caf_steer+caf_steer_previous)/2.0)
+					caf_steer_previous = caf_steer
+					caf_motor = int((caf_motor+caf_motor_previous)/2.0)
+					caf_motor_previous = caf_motor
+
+					if caf_motor > 53 and np.array(encoder_list[0:3]).mean() > 1 and np.array(encoder_list[-3:]).mean()<0.2:
+						freeze = True
+
+					if freeze:
+						print "######### FREEZE ###########"
+						caf_steer = 49
+						caf_motor = 49
+
 					if verbose:
 						print caf_motor,caf_steer,motor_gain,steer_gain,state
 					
@@ -228,7 +270,8 @@ try:
 
 		else:
 			pass
-
+		if state == 4:
+			freeze = False
 		if state == 4 and state_transition_time_s > 30:
 			print("Shutting down because in state 4 for 30+ s")
 			unix('sudo shutdown -h now')
@@ -242,7 +285,7 @@ try:
 			#from run_params import *
 			reload(kzpy3.teg2.car_run_params)
 			from kzpy3.teg2.car_run_params import *
-
+			model_name_pub.publish(std_msgs.msg.String(weights_file_path))
 			reload_timer.reset()
 
 		if git_pull_timer.check():

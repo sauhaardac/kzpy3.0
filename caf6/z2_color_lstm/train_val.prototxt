@@ -1,44 +1,25 @@
-layer {
-	name: "steer_motor_target_data"
-	type: "DummyData"
-	top: "steer_motor_target_data"
-	dummy_data_param {
-		shape {
-            dim: 1
-			dim: 20
-			dim: 1024 # number of time samples
-	    }
-	}
+input: "ZED_data_pool2"
+input_shape {
+    dim: 1
+    dim: 12
+    dim: 94
+    dim: 168
 }
 
-layer {
-	name: "metadata"
-	type: "DummyData"
-	top: "metadata"
-	dummy_data_param {
-		shape {
-			dim: 1
-			dim: 6
-			dim: 14
-			dim: 26
-		}
-	}
+input: "metadata"
+input_shape {
+    dim: 1
+    dim: 6
+    dim: 14
+    dim: 26
 }
 
-layer {
-	name: "ZED_data_pool2"
-	type: "DummyData"
-	top: "ZED_data_pool2"
-	dummy_data_param {
-		shape {
-			dim: 1
-			dim: 12
-			dim: 94
-			dim: 168
-		}
-	}
+input: "steer_motor_target_data"
+input_shape {
+    dim: 1
+    dim: 20
+    dim: 1024 # time samples
 }
-
 
 ###################### Convolutional Layer Set 'conv1' ######################
 #
@@ -211,7 +192,7 @@ layer {
     decay_mult: 0
   }
   inner_product_param {
-    num_output: 101
+    num_output: 1024
     weight_filler {
       type: "gaussian"
       std: 0.01
@@ -224,15 +205,13 @@ layer {
   }
 }
 
-##################### Output layer ######################
-
+################### Eucliean loss layer  ####################
 layer {
-	name: "softmax"
-	type: "Softmax"
+	name: "euclidean"
+	type: "EuclideanLoss"
 	bottom: "ip3"
-	top: "softmax"
-    softmax_param {
-      axis: 2
-    }
+	bottom: "steer_motor_target_data"
+	top: "euclidean"
+	loss_weight: 1
+    include: { phase : TRAIN }
 }
-	
