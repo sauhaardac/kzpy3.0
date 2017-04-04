@@ -220,8 +220,8 @@ try:
 
 					solver.net.forward(start='ZED_data',end='ZED_data_pool2')
 
-					solver.net.blobs['ZED_data_pool2'].data[:,:,:,:] /= 255.0
-					solver.net.blobs['ZED_data_pool2'].data[:,:,:,:] -= 0.5
+					#solver.net.blobs['ZED_data_pool2'].data[:,:,:,:] /= 255.0
+					#solver.net.blobs['ZED_data_pool2'].data[:,:,:,:] -= 0.5
 
 					solver.net.forward(start='conv1',end='ip2')
 
