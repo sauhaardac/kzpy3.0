@@ -218,7 +218,7 @@ try:
 					solver.net.blobs['metadata'].data[0,5,:,:] = Furtive
 					
 
-					solver.net.forward(start='ZED_data',end='ZED_data_pool2')
+					solver.net.forward(start='ZED_data',end='ZED_data_pool2_scale')
 
 					#solver.net.blobs['ZED_data_pool2'].data[:,:,:,:] /= 255.0
 					#solver.net.blobs['ZED_data_pool2'].data[:,:,:,:] -= 0.5
