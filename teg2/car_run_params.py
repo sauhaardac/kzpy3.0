@@ -45,7 +45,7 @@ steer_gain = 1.0
 
 gyro_freeze_threshold = 500
 acc_freeze_threshold = 10
-
+motor_freeze_threshold = 53
 #
 ###################################################################
 

@@ -252,7 +252,7 @@ try:
 					caf_motor = int((caf_motor+caf_motor_previous)/2.0)
 					caf_motor_previous = caf_motor
 
-					if caf_motor > 60 and np.array(encoder_list[0:3]).mean() > 1 and np.array(encoder_list[-3:]).mean()<0.2:
+					if caf_motor > motor_freeze_threshold and np.array(encoder_list[0:3]).mean() > 1 and np.array(encoder_list[-3:]).mean()<0.2:
 						freeze = True
 
 					if freeze:
