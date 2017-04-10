@@ -1,10 +1,10 @@
-from kzpy3.utils import *
+from kzpy3.vis import *
 import roslib
 import std_msgs.msg
 import geometry_msgs.msg
 import rospy
 
-N = 200
+N = 1000
 steer = []
 def steer_callback(msg):
 	global steer
@@ -38,10 +38,19 @@ def gyro_callback(msg):
 		gyroY = gyroY[-N:]
 		gyroZ = gyroZ[-N:]
 
-acc = []
+accX = []
+accY = []
+accZ = []
 def acc_callback(msg):
-	global acc
+	global accX,accY,accZ
 	acc = msg
+	accX.append(acc.x)
+	accY.append(acc.y)
+	accZ.append(acc.z)
+	if len(accX) > N:
+		accX = accX[-N:]
+		accY = accY[-N:]
+		accZ = accZ[-N:]
 
 
 rospy.init_node('listener',anonymous=True)
@@ -100,11 +109,18 @@ while not rospy.is_shutdown():
 		#print(d2s(steer_str,motor_str,state,'[',gyro.x,gyro.y,gyro.y,']','[',acc.x,acc.y,acc.z,']',motor,steer,bag_str))
 		plt.clf()
 		plt.xlim(0,N)
-		plt.ylim(-200,200)
-		plot(steer)
+		plt.ylim(-30,30)
+		#plot(steer)
 		#plot(gyroX)
 		#plot(gyroY)
-		plot(gyroZ)
+		#plot(gyroZ)
+		plot(accX)
+		plot(accY)
+		plot(accZ)
+		mag = []
+		for i in range(len(accX)):
+			mag.append(sqrt(accX[i]**2+accZ[i]**2))
+		plot(mag)
 
 		pause(0.001)
 	rosbag_folder = most_recent_file_in_folder('/media/ubuntu/rosbags')
