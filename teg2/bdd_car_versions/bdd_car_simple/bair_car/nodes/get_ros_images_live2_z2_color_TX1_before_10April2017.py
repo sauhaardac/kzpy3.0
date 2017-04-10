@@ -272,13 +272,9 @@ try:
 			pass
 		if state == 4:
 			freeze = False
-		if state == 2:
-			freeze = False
-		if state == 1:
-			freeze = False
 		if state == 4 and state_transition_time_s > 30:
 			print("Shutting down because in state 4 for 30+ s")
-			#unix('sudo shutdown -h now')
+			unix('sudo shutdown -h now')
 		if time_step.check():
 			print(d2s("In state",state,"for",state_transition_time_s,"seconds, previous_state =",previous_state))
 			time_step.reset()
