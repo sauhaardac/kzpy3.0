@@ -252,7 +252,8 @@ try:
 					caf_motor = int((caf_motor+caf_motor_previous)/2.0)
 					caf_motor_previous = caf_motor
 
-					if caf_motor > motor_freeze_threshold and np.array(encoder_list[0:3]).mean() > 1 and np.array(encoder_list[-3:]).mean()<0.2:
+
+					if caf_motor > motor_freeze_threshold and np.array(encoder_list[0:3]).mean() > 1 and np.array(encoder_list[-3:]).mean()<0.2 and state_transition_time_s > 1:
 						freeze = True
 
 					if freeze:
@@ -269,16 +270,16 @@ try:
 						motor_cmd_pub.publish(std_msgs.msg.Int32(caf_motor))
 
 		else:
-			pass
-		if state == 4:
-			freeze = False
-		if state == 2:
-			freeze = False
-		if state == 1:
-			freeze = False
-		if state == 4 and state_transition_time_s > 30:
-			print("Shutting down because in state 4 for 30+ s")
-			#unix('sudo shutdown -h now')
+			caffe_enter_timer.reset()
+			if state == 4:
+				freeze = False
+			if state == 2:
+				freeze = False
+			if state == 1:
+				freeze = False
+			if state == 4 and state_transition_time_s > 30:
+				print("Shutting down because in state 4 for 30+ s")
+				#unix('sudo shutdown -h now')
 		if time_step.check():
 			print(d2s("In state",state,"for",state_transition_time_s,"seconds, previous_state =",previous_state))
 			time_step.reset()
