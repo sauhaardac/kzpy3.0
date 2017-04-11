@@ -44,8 +44,8 @@ verbose = False
 steer_gain = 1.0
 
 gyro_freeze_threshold = 500
-acc_freeze_threshold = 10
-motor_freeze_threshold = 60
+acc_freeze_threshold = 20
+motor_freeze_threshold = 70
 #
 ###################################################################
 
@@ -79,7 +79,7 @@ if computer_name == 'Mr_LightBlue':
 	motor_gain = 1.0
 	pass
 if computer_name == 'Mr_Yellow':
-	motor_gain = 1.0
+	motor_gain = 1.5
 	pass
 
 #
